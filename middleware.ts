@@ -1,10 +1,6 @@
 import { authMiddleware, redirectToSignIn } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
-// This example protects all routes including api/trpc routes
-// Please edit this to allow other routes to be public as needed.
-// See https://clerk.com/docs/references/nextjs/auth-middleware for more information about configuring your Middleware
-
 export default authMiddleware({
   //publicRoutesは、認証を必要としないパスを指定するための設定です。
   publicRoutes: ["/"],
@@ -20,12 +16,10 @@ export default authMiddleware({
         path = `/organization/${auth.orgId}`;
       }
 
-      //URL クラスを使用して、新しいURLオブジェクトを作成しています。
-      //この新しいURLは、path（リダイレクト先のパス）を基準として、現在のリクエストのURL（req.url）に対して解決されます。
+      //もしpathが/select-orgで、req.urlがhttp://mywebsite.comだった場合、新しく作成されるURLはhttp://mywebsite.com/select-orgになります。
       const orgSelection = new URL(path, req.url);
 
       //NextResponse.redirect を使用して、指定されたURLにリダイレクトするようにレスポンスを構築しています。
-      //orgSelectionは先程作成した新しいURLオブジェクトで、ここで指定したURLに対してブラウザがリダイレクトされます。
       return NextResponse.redirect(orgSelection);
     }
 
